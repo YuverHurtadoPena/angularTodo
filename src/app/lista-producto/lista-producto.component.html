@@ -1,0 +1,59 @@
+<div id="listaProducto">
+  <div class="card text-center">
+    <div class="card-header">
+      PRODUCTOS
+    </div>
+    <div class="card-body" style="display: inline-flex;margin: auto;">
+      <div>
+        <input type="text" class="form-control" placeholder="Buscar por nombre" #buscarbyName (keyup)="buscarProducto(buscarbyName.value)">
+      </div>
+      <div style="margin-right: 10px;margin-left: 10px;">
+        <select class="form-select" (change)="loadProduct($event)">
+          <option value="3">Todos los productos</option>
+          <option value="2">Productos baratos</option>
+          <option value="1">Productos costosos</option>
+        </select>
+      </div>
+      <div>
+        <a class="btn" style="background-color: green; color:white">
+          <i style="margin-right: 10px" class="fa-sharp fa-solid fa-plus"></i>Nuevo producto</a>
+      </div>
+
+    </div>
+    <div class="card-footer text-muted">
+      {{dia}}/{{mes}}/{{anno}} - {{hora}}:{{minuto}}
+    </div>
+  </div>
+
+  <table id="customers">
+    <th>Nombre</th>
+    <th>Precio</th>
+    <th>Fecha registro</th>
+    <th>Fecha actualización</th>
+    <th>Acción</th>
+
+    <tr *ngFor="let item of productDto | productosPipe:paginaNumero:search;">
+      <td>{{item.nombre}}</td>
+      <td>${{item.valor}}</td>
+      <td>{{item.fechaRegistro | date:'dd/MM/yyyy'}}</td>
+      <td>{{item.fechaActualizacion | date:'dd/MM/yyyy'}}</td>
+      <td>
+        <i style="margin-right: 10px; color: green;" class="fa-solid fa-pen-to-square"></i>
+        <i style=" color: red;" class="fa-solid fa-trash-can"></i>
+      </td>
+    </tr>
+  </table>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item"><button class="page-link" (click)=" backPage()" >Atras</button></li>
+      <div  *ngFor="let it of arrayPagina | paginador:paginatorNumber">
+        <li class="page-item"><a class="page-link" (click)="movePaginator(it)">{{it+1}}</a></li>
+      </div>
+      <li *ngIf="(productDto | productosPipe:paginaNumero:search).length !== 0" class="page-item"><button class="page-link"(click)=" nextPage()" >Siguiente</button></li>
+    </ul>
+  </nav>
+  <div *ngIf="(productDto | productosPipe:paginaNumero:search).length === 0">
+    <p>No hay mas paginas disponibles</p>
+  </div>
+</div>
